@@ -1,7 +1,7 @@
-export const normalizePort = (val: string) => {
-  let port = parseInt(val, 10);
+const normalizePort = (val: string) => {
+  const port = parseInt(val, 10);
 
-  if (isNaN(port)) {
+  if (Number.isNaN(port)) {
     // named pipe
     return val;
   }
@@ -12,4 +12,8 @@ export const normalizePort = (val: string) => {
   }
 
   return false;
+}
+
+export default {
+  normalizePort
 }
