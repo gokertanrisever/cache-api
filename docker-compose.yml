@@ -3,7 +3,7 @@ version: "3.8"
 services:
   mongo-database:
     image: mongo:latest
-    container_name: mongodb
+    container_name: mongo-db
     volumes:
       - ./mongo-data:/data/db
     ports:
