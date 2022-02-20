@@ -30,7 +30,29 @@ const getKeys = async (req: Request, res: Response, next: NextFunction): Promise
   return res.status(200).json({ message: 'Cache entry keys', data: entries.map(entry => entry.get('key')) });
 }
 
+const createOrUpdate = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  let { key } = req.params;
+  let entry = await db.getByKey(key);
+  let message: string;
+  let statusCode: number;
+  if (entry) {
+    logger.info('Cache entry updated');
+    entry.set('value', randomStr());
+    entry.set('lastUsed', new Date());
+    await entry.save();
+    message = 'Cache entry updated!';
+    statusCode = 200;
+  } else {
+    logger.info('Cache entry created');
+    entry = await db.create({ key, value: randomStr() });
+    message = 'Cache entry created!';
+    statusCode = 201;
+  }
+  return res.status(statusCode).json({ message, data: entry.get('value') });
+}
+
 export default {
 	getByKey,
-  getKeys
+  getKeys,
+  createOrUpdate,
 };
