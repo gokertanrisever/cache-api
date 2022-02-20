@@ -66,9 +66,17 @@ const deleteByKey = async (req: Request, res: Response, next: NextFunction): Pro
   return res.status(200).json({ message });
 }
 
+const deleteAll = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  let message = 'Cache entries deleted!';
+  logger.info(message);
+  await db.deleteAll();
+  return res.status(200).json({ message });
+}
+
 export default {
 	getByKey,
   getKeys,
   createOrUpdate,
-  deleteByKey
+  deleteByKey,
+  deleteAll
 };

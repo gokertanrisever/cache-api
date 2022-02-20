@@ -4,5 +4,5 @@ export default interface IDatabase {
   getAll(): Promise<any>;
   create(key: string, value: string): Promise<void>;
   delete(key: string): Promise<void>;
-  // deleteAll(): Promise<void>;
+  deleteAll(): Promise<void>;
 }

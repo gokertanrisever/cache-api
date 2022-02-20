@@ -81,4 +81,16 @@ export default class MongoDBService implements IDatabase {
     });
   }
 
+  public deleteAll(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.model.deleteMany({}, (err: any, result: any) => {
+        if (err) {
+          logger.error(`MongoDB deleteAll error: ${err}`);
+          reject(err);
+        }
+        resolve(result);
+      });
+    });
+  }
+
 }
