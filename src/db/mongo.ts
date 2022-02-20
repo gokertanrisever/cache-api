@@ -1,7 +1,7 @@
 import IDatabase from "../interfaces/database";
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import logger from "../utils/logger";
-import { Model } from "mongoose"
+import ICache from "../interfaces/cache";
 
 export default class MongoDBService implements IDatabase {
   private connectionString: string = process.env.DB_URL || 'mongodb://localhost:27017/';
@@ -33,7 +33,7 @@ export default class MongoDBService implements IDatabase {
     });
   }
 
-  public getByKey(key: string): Promise<any> {
+  public getByKey(key: string): Promise<ICache> {
     return new Promise((resolve, reject) => {
       this.model.findOne({ key }, (err: any, result: any) => {
         if (err) {
