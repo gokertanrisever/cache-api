@@ -25,6 +25,12 @@ const getByKey = async (req: Request, res: Response, next: NextFunction): Promis
 	return res.status(201).json({ message, data: entry.get('value') });
 };
 
+const getKeys = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  let entries = await db.getAll(); 
+  return res.status(200).json({ message: 'Cache entry keys', data: entries.map(entry => entry.get('key')) });
+}
+
 export default {
 	getByKey,
+  getKeys
 };

@@ -45,6 +45,18 @@ export default class MongoDBService implements IDatabase {
     });
   }
 
+  public getAll(): Promise<ICache[]> {
+    return new Promise((resolve, reject) => {
+      this.model.find({}, (err: any, result: any) => {
+        if (err) {
+          logger.error(`MongoDB getAll error: ${err}`);
+          reject(err);
+        }
+        resolve(result);
+      });
+    });
+  }
+
   public create(data: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.model.create(data, (err: any, result: any) => {
