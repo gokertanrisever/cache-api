@@ -27,4 +27,9 @@ docker compose up
 +--------+-------------------------+
 ```
 
+## Testing
+This command will run tests (mongo-db container should be running)
+```bash
+npm run test
+```
 
