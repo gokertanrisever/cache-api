@@ -22,6 +22,7 @@ const getByKey = async (req: Request, res: Response, next: NextFunction): Promis
 	logger.info('Cache miss');
 	entry = await db.create({ key, value: randomStr() });
 	message = 'Cache entry created!';
+  handleCacheLimit();
 	return res.status(201).json({ message, data: entry.get('value') });
 };
 
@@ -48,6 +49,7 @@ const createOrUpdate = async (req: Request, res: Response, next: NextFunction): 
     message = 'Cache entry created!';
     statusCode = 201;
   }
+  handleCacheLimit();
   return res.status(statusCode).json({ message, data: entry.get('value') });
 }
 
@@ -73,10 +75,17 @@ const deleteAll = async (req: Request, res: Response, next: NextFunction): Promi
   return res.status(200).json({ message });
 }
 
+const handleCacheLimit = async (): Promise<any> => {
+  let entries = await db.getAll();
+  if (entries.length < maxNumberOfEntries) return;
+  let oldestEntry = entries.sort((a, b) => a.get('lastUsed').getTime() - b.get('lastUsed').getTime())[0];
+  await oldestEntry.remove();
+}
+
 export default {
 	getByKey,
   getKeys,
   createOrUpdate,
   deleteByKey,
-  deleteAll
+  deleteAll,
 };
