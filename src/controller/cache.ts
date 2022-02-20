@@ -51,8 +51,24 @@ const createOrUpdate = async (req: Request, res: Response, next: NextFunction): 
   return res.status(statusCode).json({ message, data: entry.get('value') });
 }
 
+const deleteByKey = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  let { key } = req.params;
+  let entry = await db.getByKey(key);
+  let message: string;
+  if (!entry) {
+    message = 'Cache entry not found!';
+    logger.info(message);
+    return res.status(404).json({ message });
+  }
+  message = 'Cache entry deleted!';
+  logger.info(message);
+  await entry.remove();
+  return res.status(200).json({ message });
+}
+
 export default {
 	getByKey,
   getKeys,
   createOrUpdate,
+  deleteByKey
 };

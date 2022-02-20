@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 import ICache from '../interfaces/cache';
 
-const ttl = process.env.TTL_MINUTES || 60;
+const ttl = process.env.TTL_IN_SECONDS || 60 * 60 * 24; // default is 1 day
 
 const cacheSchema = new Schema<ICache>(
 	{
